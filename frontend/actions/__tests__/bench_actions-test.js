@@ -26,15 +26,22 @@ describe('async actions', () => {
     // REFER TO REDUX TESTS DOCS
     // Set up expectedActions:
     // Your code here
-
+    const expectedActions = [
+      { 
+        type: actions.RECEIVE_BENCHES,
+        benches: testBenches, 
+      }
+    ];
+    //jest.fn replaces APIUtil with a mock function 
+    //during the test replace that function with this dummy function
     ApiUtil.fetchBenches = jest.fn(() => {
       return Promise.resolve(testBenches);
     });
 
     const store = mockStore({ benches: {} });
-
+    //when we dispatch actions.fetchBenches(), the jest.fn() gets called instead
     return store.dispatch(actions.fetchBenches()).then(() => {
-      // Your code here
+      expect(store.getActions()).toEqual(expectedActions);
     });
   });
 });
